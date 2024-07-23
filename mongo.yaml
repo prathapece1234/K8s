@@ -81,7 +81,7 @@ spec:
     volumes:
     - name: mongo-data
       persistentVolumeClaim:
-      claimName: mypvc
+        claimName: mypvc
   
 
 ---
