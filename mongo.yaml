@@ -11,13 +11,12 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   hostPath:
     path: /home/ubuntu/mongo/mongo-vol
- 
-
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mypvc
+  namespace: webapps
 spec:
   resources:
     requests:
@@ -30,6 +29,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: mongo-secret
+  namespace: webapps
 type: Opaque
 data:
   username: cHJhdGhhcA==
@@ -38,6 +38,7 @@ data:
 ---
 apiVersion: v1
 kind: ConfigMap
+namespace: webapps
 metadata:
   name: mongo-config
 data:
@@ -47,6 +48,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mongo-deployment
+  namespace: webapps
   labels:
     app: mongo
 spec:
@@ -90,6 +92,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mongo-service
+  namespace: webapps
 spec:
   selector:
     app: mongo
@@ -102,6 +105,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: webapp-deployment
+  namespace: webapps
   labels:
     app: webapp
 spec:
@@ -142,6 +146,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: webapp-service
+  namespace: webapps
 spec:
   type: NodePort
   selector:
