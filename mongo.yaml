@@ -11,6 +11,8 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   hostPath:
     path: /home/ubuntu/mongo/mongo-vol
+ 
+
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -36,7 +38,6 @@ data:
 ---
 apiVersion: v1
 kind: ConfigMap
-namespace: webapps
 metadata:
   name: mongo-config
 data:
@@ -59,25 +60,25 @@ spec:
         app: mongo
     spec:
       containers:
-       - name: mongo
-         image: mongo:6.0
-         ports:
-         - containerPort: 27017
-         env:
-         - name: MONGO_INITDB_ROOT_USERNAME
-           valueFrom:
+      - name: mongo
+        image: mongo:6.0
+        ports:
+        - containerPort: 27017
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          valueFrom:
             secretKeyRef:
               name: mongo-secret
               key: username
-         - name: MONGO_INITDB_ROOT_PASSWORD
-           valueFrom:
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom:
             secretKeyRef:
               name: mongo-secret
               key: password
-         volumeMounts:
-          - name: mongo-data
-            mountPath: /data/db
-volume:
+        volumeMounts:
+        - name: mongo-data
+          mountPath: /data/db
+volumes:
   - name: mongo-data
     persistentVolumeClaim:
       claimName: mypvc
